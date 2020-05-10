@@ -46,6 +46,24 @@ Również sam plik może nie zezwalać nam na jego otworzenie lub modyfikację.
 \end{itemize}
 
 \subsection{\textit{open()}}
+Jest wiele efektów wywołania tej funkcji zależnie od podanych jej argumentów.
+Lecz jej głównym zadaniem jest otworzenie jakiegoś pliku i zwrócenie do niego deskryptora.
+
+Do funkcji przesyłana jest ścieżka dostępu, ewentualne flagi zmieniające jej działanie oraz możliwe jest przesłanie jej permisji pliku.
+Po wywołaniu zwraca wartość taką jak w przypadku funkcji \textbf{creat()}.
+
+Argument ścieżki oraz permisji pliku są identyczne jak w wyżej opisanej funkcji \textbf{creat()}.
+
+Flagi przesłane do funkcji zmieniają wiele rzeczy, najprostsze z nich otwierają plik w innych trybach odczytu/zapisu. O\_RDONLY, O\_WRONLY, O\_RDWR i O\_APPEND odpowiadają następująco otworzenie w trybie tylko odczytu, tylko zapisu, odczyt i zapis oraz tryb dodawania do pliku zamiast przyciana go do zera.
+
+\begin{itemize}
+\item \textbf{O\_CREAT} - opisane w przykładzie funkcji \textbf{creat()}
+\item \textbf{O\_LARGEFILE} - zezwala na używanie przesunięcia w pliku większego niż $2^{32}$
+\item \textbf{O\_NONBLOCK} - otwiera plik bez blokowania programu i czekania aż plik się otworzy. Zwracany jest deskryptor pliku lecz nie jest od odrazu gotowy do użycia
+\item \textbf{O\_SYNC} - podczas zapisu do pliku proces jest blokowany do momentu dostarczenia danych do zapisywanego sprzętu
+\item \textbf{O\_TRUNC} - opisane w przykładzie funkcji \textbf{creat()}
+\end{itemize}
+
 \subsection{\textit{read()}}
 
 \section{Temat - 3}
