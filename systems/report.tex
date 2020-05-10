@@ -69,7 +69,29 @@ W takim przypadku, zmienna globalna \textit{errno} jest ustawiona na wartością
 Wszystkie błędy są identyczne jak w przyadku funckji \textbf{creat()}.
 
 \subsection{\textit{read()}}
+Funkcja ta będzie odczytywać $n$ bajtów z przesłanego deskryptora pliku do miejsca w pamięci,
+które jest buforem wskazanym przez użytkownika.
 
+Funkcja zostaje wywołana z określonym deskryptorem, adresem, które jest buforem oraz ilością $n$ bajtów, które mają zostać wczytane. Funkcja zwraca wartość typu \textit{ssize\_t}, która określa ilość wczytanych bajtów lub informuje o błędzie.
+
+Deskryptor plików monżna otrzymać poprzez użycie funkcji \textbf{open()} lub \textbf{creat()}.
+Bufor, do którego dane będą wczytywane użytkownik musi stworzyć odpowiednio duży, ponieważ funkcja nie sprawdza czy ma możliwość zapisywania do danego miejsca w pamięci.
+$n$ bajtów, które zostaną wczytane są liczbą całkowitą typu \textit{size\_t}.
+Oznacza to, że maksymalna ilość bajtów jaka może zostać wczytana jest ograniczona przez architekturę bitową systemu operacyjnego, na którym skompilowany został program.
+
+Funckja zwraca ilość wczytanych bajtów, lub wartość równą $-1$ gdy wystąpił błąd.
+W takim przypadku, zmienna globalna \textit{errno} jest ustawiona na wartością opisującą błąd.
+
+\begin{itemize}
+\item \textbf{EBADF} - z przesłanego deskryptora pliku nie można odczytywać.
+\item \textbf{EFAULT} - wskaźnik bufora wskazuje na nielegalne miejsce.
+\item \textbf{EINTR} - sygnał przerwał wczytywanie danych przez funkcję.
+\item \textbf{EIO} - wystąpił błąd fizyczny z urządzeniem wejścia/wyjścia.
+\item \textbf{EISDIR} - przesłany deskryptor jest folderem.
+\item \textbf{ENOLINK} - przesłany deskryptor jest linkiem do nieaktywnej maszyny zewnętrznej.
+\item \textbf{ESPIPE} - przesłany deskryptor jest powiązany z \textit{pipe}'em.
+\end{itemize}
+  
 \section{Temat - 3}
 
 \end{document}
