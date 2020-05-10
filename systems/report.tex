@@ -64,6 +64,10 @@ Flagi przesłane do funkcji zmieniają wiele rzeczy, najprostsze z nich otwieraj
 \item \textbf{O\_TRUNC} - opisane w przykładzie funkcji \textbf{creat()}
 \end{itemize}
 
+Funckja zwraca deskryptor pliku, lub wartość równą $-1$ gdy wystąpił błąd.
+W takim przypadku, zmienna globalna \textit{errno} jest ustawiona na wartością opisującą błąd.
+Wszystkie błędy są identyczne jak w przyadku funckji \textbf{creat()}.
+
 \subsection{\textit{read()}}
 
 \section{Temat - 3}
