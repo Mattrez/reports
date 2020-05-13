@@ -46,7 +46,7 @@ Również sam plik może nie zezwalać nam na jego otworzenie lub modyfikację.
 \end{itemize}
 
 Nie istnieją duże różnice pomiędzy tą funkcją na jądrze Linux a na jądrze znajdującym się na systemie Solarisie.
-Funkcje odpowiadają temu samemu wywołaniu funkcji \textbf{open()} oraz zachowują się tak samo.
+Funkcje odpowiadają temu samemu wywołaniu funkcji \textbf{open()} oraz zachowują się tak samo.
 
 \subsection{\textit{open()}}
 Jest wiele efektów wywołania tej funkcji zależnie od podanych jej argumentów.
@@ -105,7 +105,98 @@ W przypadku wywołania jej z argumentem deskryptora pliku będącego \textit{soc
   
 \section{Temat - 3}
 \subsection{\textit{link()}}
+Wywołując komendę link tworzymy nowe dowiązanie (zwane też twardym, ang. hard link) najczęściej w innej lokalizacji. Nasza nowa nazwa pliku może być używana dokładnie tak samo jak stara w dowolnych operacjach, ponieważ obie nazwy odnoszą się do tego samego pliku, więc ich właściciel jak i prawa pozostają identyczne, przez co niemożliwe jest wskazania oryginału.
+
+Funkcja jest wywoływana z określonym położeniem pliku i położeniem naszego dowiązania. Po wykonaniu zwraca wartość zero, w przypadku błędu zwraca -1 i ustawia zmienną globalną \textit{errno} na wartość opisującą odpowiedni błąd.
+
+
+\textbf{Argumentami} tej funkcji są kolejno:
+\begin{itemize}
+\item \textbf{oldpath} - ścieżka do naszego pliku
+\item \textbf{newpath} - ścieżka w której chcemy utworzyc dowiązanie (w momencie w którym w ścieżce newpath plik już istnieje, dowiązanie nie zostanie utworzone a plik nie zostanie nadpisany)
+\end{itemize}
+
+\textbf{Opis błędów}
+\begin{itemize}
+\item \textbf{EACCES} zapis do lokalizacji w której jest \textit{newpath} nie jest dozwolony, bądź \textit{oldpath} lub \textit{newpath} nie daje uprawnień wykonywania (przeszukiwania katalogu).
+\item \textbf{EDQUOT} wyczerpano limit bloków dysku użytkownika w tym systemie plików.
+\item \textbf{EEXIST} plik \textit{newpath} już istnieje
+\item \textbf{EFAULT} \textit{oldpath} lub \textit{newpath} wskazuje na przestrzeń adresową niedostępną dla użytkownika.
+\item \textbf{EIO} Wystąpił błąd fizyczny z urządzeniem Wejścia/Wyjścia
+\item \textbf{ELOOP} Podczas przetwarzania \textit{oldpath} lub \textit{newpath} napotkano zbyt dużo dowiązań symbolicznych
+\item \textbf{EMLINK} Plik do którego odnosi się \textit{oldpath} posiada już maksymalną ilość dowiązań. W systemie \textit{ext4} maksymalna liczba twardych dowiązań to 65,000 
+\item \textbf{ENAMETOOLONG} Długość któregoś z argumentów 
+przekracza wartość w zmiennej globalnej PATH\_MAX
+\item \textbf{ENOENT}  \textit{oldpath} lub \textit{newpath} jest pustą ścieżką, taka ścieżka nie istnieje lub plik  \textit{oldpath} nie istnieje
+\item \textbf{ENOLINK}  \textit{oldpath} lub \textit{newpath} wskazuje na zdalną maszynę lub dowiązanie do tej maszyny nie jest już aktywne
+\item \textbf{ENOSPC}  Ścieżka w której miało znajdować się dowiązanie nie może być rozszerzone.
+\item \textbf{ENOTDIR}  Komponent użyty w jednej z podanych ścieżek nie jest katalogiem.
+\item \textbf{EPERM} system plików w których znajdują się \textit{oldpath} i \textit{newpath} nie obsługuje tworzenia dowiązań.
+\item \textbf{EROFS} zarządane dowiązanie wymaga zapisu w ścieżce w systemie plików tylko do odczytu.
+
+\item \textbf{EXDEV} \textit{oldpath} i \textit{newpath} leżą w innych systemach plików.
+
+
+\end{itemize}
+\textbf{Różnice między Linuxem a Solarise}
+Nazwy argumentów na Solarisie są inne:
+\textit{newpath} nazywa się \textit{new},
+\textit{oldpath} nazywa się \textit{existing}
+Zamiast błęduo \textbf{EIO} w Solarisie możemy napotkać błąd
+\textbf{EINTR} Napotkano sygnał podczas wykonywania funkcji link.
+
+
 \subsection{\textit{symlink()}}
+
+Funkcja symlink tworzy dowiązanie symboliczne (miękkie dowiązanie), o nazwie \textit{linkpath} który zawiera łańcuch znaków pliku \textit{target}. Dowiązania symboliczne mogą zawierać składniki .., które w przypadku użycia na początku dowiązania odnoszą się do katalogów nadrzędnych ścieżki w której utworzono dowiązanie.
+
+Istnieje przypadek w którym dowiązanie symboliczne może wskazywać na nieistniejący plik, jest to tak zwane wiszące dowiązanie.
+
+Prawa dostęp do dowiązania symbolicznego są nieistotne, ignoruje się jego właściciela w trakcie podążania za powiązaniem. Jednakże są one sprawdzane podczas usuwania bądź modyfikacji nazwy dowiązania gdy dowiązanie symboliczne znajduje się w katalogu z ustawionym bitem \textit{sticky} ( \textbf{S-ISVTX} ).
+
+Podczas wywołania podaj się tak jak w przypadku funkcji link() ścieżkę do pliku i ścieżkę w której ma zostać utworzone dowiązanie.
+Funkcja zwraca wartość zero gdy się powiedzie, w wypadku błędu zwraca wartość -1 i ustawia zmienną globalną \textit{errno} na wartość opisującą odpowiedni błąd.
+
+\textbf{Argumentami} tej funkcji są kolejno:
+\begin{itemize}
+\item \textbf{target} - ścieżka do naszego pliku
+\item \textbf{linkpath} - ścieżka w której chcemy utworzyc dowiązanie (w momencie w którym w ścieżce newpath plik już istnieje, dowiązanie nie zostanie utworzone a plik nie zostanie nadpisany)
+\end{itemize}
+
+\textbf{Opis błędów}
+\begin{itemize}
+\item \textbf{EACCES} zapis do lokalizacji w której jest \textit{linkpath} nie jest dozwolony, bądź jeden z katalogów w ścieżce \textit{linkpath} nie daje uprawnień wykonywania (przeszukiwania katalogu).
+\item \textbf{EDQUOT} wyczerpano limit bloków dysku użytkownika w tym systemie plików.
+\item \textbf{EEXIST} plik \textit{linkpath} już istnieje
+\item \textbf{EFAULT} \textit{target} lub  \textit{linkpath} wskazuje na przestrzeń adresową niedostępną dla użytkownika.
+\item \textbf{EIO} Wystąpił błąd fizyczny z urządzeniem Wejścia/Wyjścia
+\item \textbf{ELOOP} Podczas przetwarzania \textit{linkpath} lub napotkano zbyt dużo dowiązań symbolicznych
+\item \textbf{ENAMETOOLONG} Długość któregoś z argumentów 
+przekracza wartość w zmiennej globalnej PATH\_MAX
+\item \textbf{ENOENT}  \textit{target} lub \textit{linkpath} jest pustą ścieżką, taka ścieżka nie istnieje lub \textit{linkpath} jest wiszącym dowiązaniem symbolicznym. 
+
+\item \textbf{ENOMEM}  Wymagana ilość pamięci jądra nie była dostępna.
+\item \textbf{ENOSPC}  Ścieżka w której miało znajdować się dowiązanie nie może być rozszerzone.
+\item \textbf{ENOTDIR}  Komponent użyty w jednej z podanych ścieżek nie jest katalogiem.
+\item \textbf{EPERM} system plików w których znajduje się \textit{linkpath} nie obsługuje tworzenia symbolicznych dowiązań.
+\item \textbf{EROFS} zarządane dowiązanie wymaga zapisu w ścieżce w systemie plików tylko do odczytu.
+
+
+
+\end{itemize}
+\textbf{Różnice między Linuxem a Solarise}
+
+
+Nazwy argumentów na Solarisie są inne:
+
+\textit{linkpath} nazywa się \textit{name1},
+
+\textit{target} nazywa się \textit{name2}
+
+W Solarisie  błąd \textbf{EPERM} nazywa się \textbf{ENOSYS}
+Solaris nie posiada błędu informującego o niewystarczającej pamięci jądra \textbf{ENOMEM}
+
+
 \subsection{\textit{stat()}}
 
 \end{document}
