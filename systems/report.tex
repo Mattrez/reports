@@ -113,7 +113,7 @@ Funkcja jest wywoływana z określonym położeniem pliku i położeniem naszego
 \textbf{Argumentami} tej funkcji są kolejno:
 \begin{itemize}
 \item \textbf{oldpath} - ścieżka do naszego pliku
-\item \textbf{newpath} - ścieżka w której chcemy utworzyc dowiązanie (w momencie w którym w ścieżce newpath plik już istnieje, dowiązanie nie zostanie utworzone a plik nie zostanie nadpisany)
+\item \textbf{newpath} - ścieżka w której chcemy utworzyć dowiązanie (w momencie w którym w ścieżce newpath plik już istnieje, dowiązanie nie zostanie utworzone a plik nie zostanie nadpisany)
 \end{itemize}
 
 \textbf{Opis błędów}
@@ -138,11 +138,11 @@ przekracza wartość w zmiennej globalnej PATH\_MAX
 
 
 \end{itemize}
-\textbf{Różnice między Linuxem a Solarise}
+\textbf{Różnice między Linuxem a Solarisem}
 Nazwy argumentów na Solarisie są inne:
 \textit{newpath} nazywa się \textit{new},
 \textit{oldpath} nazywa się \textit{existing}
-Zamiast błęduo \textbf{EIO} w Solarisie możemy napotkać błąd
+Zamiast błędu \textbf{EIO} w Solarisie możemy napotkać błąd
 \textbf{EINTR} Napotkano sygnał podczas wykonywania funkcji link.
 
 
@@ -160,7 +160,7 @@ Funkcja zwraca wartość zero gdy się powiedzie, w wypadku błędu zwraca warto
 \textbf{Argumentami} tej funkcji są kolejno:
 \begin{itemize}
 \item \textbf{target} - ścieżka do naszego pliku
-\item \textbf{linkpath} - ścieżka w której chcemy utworzyc dowiązanie (w momencie w którym w ścieżce newpath plik już istnieje, dowiązanie nie zostanie utworzone a plik nie zostanie nadpisany)
+\item \textbf{linkpath} - ścieżka w której chcemy utworzyć dowiązanie (w momencie w którym w ścieżce newpath plik już istnieje, dowiązanie nie zostanie utworzone a plik nie zostanie nadpisany)
 \end{itemize}
 
 \textbf{Opis błędów}
@@ -170,7 +170,7 @@ Funkcja zwraca wartość zero gdy się powiedzie, w wypadku błędu zwraca warto
 \item \textbf{EEXIST} plik \textit{linkpath} już istnieje
 \item \textbf{EFAULT} \textit{target} lub  \textit{linkpath} wskazuje na przestrzeń adresową niedostępną dla użytkownika.
 \item \textbf{EIO} Wystąpił błąd fizyczny z urządzeniem Wejścia/Wyjścia
-\item \textbf{ELOOP} Podczas przetwarzania \textit{linkpath} lub napotkano zbyt dużo dowiązań symbolicznych
+\item \textbf{ELOOP} Podczas przetwarzania \textit{linkpath} napotkano zbyt dużo dowiązań symbolicznych
 \item \textbf{ENAMETOOLONG} Długość któregoś z argumentów 
 przekracza wartość w zmiennej globalnej PATH\_MAX
 \item \textbf{ENOENT}  \textit{target} lub \textit{linkpath} jest pustą ścieżką, taka ścieżka nie istnieje lub \textit{linkpath} jest wiszącym dowiązaniem symbolicznym. 
@@ -179,12 +179,12 @@ przekracza wartość w zmiennej globalnej PATH\_MAX
 \item \textbf{ENOSPC}  Ścieżka w której miało znajdować się dowiązanie nie może być rozszerzone.
 \item \textbf{ENOTDIR}  Komponent użyty w jednej z podanych ścieżek nie jest katalogiem.
 \item \textbf{EPERM} system plików w których znajduje się \textit{linkpath} nie obsługuje tworzenia symbolicznych dowiązań.
-\item \textbf{EROFS} zarządane dowiązanie wymaga zapisu w ścieżce w systemie plików tylko do odczytu.
+\item \textbf{EROFS} zażądane dowiązanie wymaga zapisu w ścieżce w systemie plików tylko do odczytu.
 
 
 
 \end{itemize}
-\textbf{Różnice między Linuxem a Solarise}
+\textbf{Różnice między Linuxem a Solarisem}
 
 
 Nazwy argumentów na Solarisie są inne:
@@ -198,5 +198,124 @@ Solaris nie posiada błędu informującego o niewystarczającej pamięci jądra 
 
 
 \subsection{\textit{stat()}}
+
+Funkcja\textit{ stat()} zwraca informacje o podanym pliku w buforze wskazanym przez użytkownika. 
+Do uzyskania tej informacji nie są wymagane prawa dostępu do samego pliku, lecz wymagane są prawa wykonywania do wszystkich katalogów w ścieżce podanej przez użytkownika. 
+
+Funkcje\textit{ stat()} wywołuje się poprzez podanie ścieżki do pliku i buforu a jej rezultatem jest zwrócenie struktury \textit{stat} do podanego bufora. 
+
+Struktura \textit{stat} wygląda następująco:
+\begin{verbatim}
+struct stat {
+    dev_t     st_dev;      /* ID urządzenia na którym znajduje się plik */
+    ino_t     st_ino;      /* numer i-węzła */
+    mode_t    st_mode;     /* tryb i typ pliku */
+    nlink_t   st_nlink;    /* liczba stałych dowiązań */
+    uid_t     st_uid;      /* ID użytkownika właściciela */
+    gid_t     st_gid;      /* ID grupy właściciela */
+    dev_t     st_rdev;     /* ID urządzenia (dla pliku specjalnego) */
+    off_t     st_size;     /* rozmiar pliku w bajtach */
+    blksize_t st_blksize;  /* rozmiar bloku dla wyjścia/wejścia systemu pliku */
+    blkcnt_t  st_blocks;   /* ilość zaalokowanych bloków o rozmiarach 512-bajtów */
+    struct timespec st_atim;    /* czas ostatniego dostępu, jest zmieniany przy procedurach: */
+    struct timespec st_mtim;    /* czas ostatniej modyfikacji */
+    struct timespec st_ctim;    /* czas ostatniej zmiany informacji i-węzła, np. grupy, liczby dowiązań, praw itp. */
+    /* Ta struktura może różnić się w zależności od architektury */
+};
+\end{verbatim}
+Dla pola st\_mode istnieją zdefiniowane maski do typu pliku, są to kolejno:
+\begin{description}
+\item[S\_IFMT]	0170000	maska bitowa dla pola bitowego typu pliku
+\item[S\_IFSOCK]0140000	maska gniazdo
+\item[S\_IFLNK]	0120000	maska dowiązania symbolicznego
+\item[S\_IFREG]	0100000	maska dla pliku regularnego
+\item[S\_IFBLK]	0060000	maska dla urządzenia blokowego
+\item[S\_IFDIR]	0040000	maska dla katalogu
+\item[S\_IFCHR]	0020000	maska dla urządzenia znakowego
+\item[S\_IFIFO]	0010000	maska kolejki First In First Out
+\end{description}
+Funkcja stat potrafi nam też podać informację o prawach danego pliku poprzez zastosowanie poniższych masek:
+\begin{description}
+
+\item[S\_ISUID]	04000	bit "set-used-ID"
+\item[S\_ISGID]	02000	bit "set-group-ID" 
+\item[S\_ISVTX]	01000	bit "sticky" tylko właściciel może zmieniać nazwę bądź usuwać dany plik lub katalog.
+\item[S\_IRWXU]	00700	właściciel ma prawa odczytu, zapisu i wykonania
+\item[S\_IRUSR]	00400	właściciel ma prawa odczytu
+\item[S\_IWUSR]	00200	właściciel ma prawa zapisu
+\item[S\_IXUSR]	00100	właściciel ma prawa wykonania
+\item[S\_IRWXG]	00070	grupa ma prawa odczytu, zapisu i wykonania
+\item[S\_IRGRP]	00040	grupa ma prawa odczytu
+\item[S\_IWGRP]	00020	grupa ma prawa zapisu
+\item[S\_IXGRP]	00010	grupa ma prawa wykonania
+\item[S\_IRWXO]	00007	pozostali użytkownicy mają prawo odczytu, zapisu i wykonania
+\item[S\_IROTH]	00004	pozostali użytkownicy mają prawa odczytu
+\item[S\_IWOTH]	00002	pozostali użytkownicy mają prawa zapisu
+\item[S\_IXOTH]	00001	pozostali użytkownicy mają prawa wykonania
+\end{description}
+
+Funkcja zwraca wartość zero gdy się powiedzie, w wypadku błędu zwraca wartość -1 i ustawia zmienną globalną \textit{errno} na wartość opisującą odpowiedni błąd.
+
+\textbf{Argumentami} tej funkcji są kolejno:
+\begin{itemize}
+\item \textbf{pathname} - ścieżka do naszego pliku który chcemy przeanalizować
+\item \textbf{statbuf} - bufor wskazany przez użytkownika, do którego funkcja przekaże parametry pliku podanego w \textit{pathname}
+\end{itemize}
+
+\textbf{Opis błędów}
+\begin{itemize}
+\item \textbf{EACCES} brakujące uprawnienia wymagane do przeszukania jednego z katalogów w ścieżce \textit{pathname}
+\item \textbf{EFAULT} Zły adres.
+\item \textbf{ELOOP} Podczas przetwarzania ścieżki \textit{pathname} napotkano zbyt dużo dowiązań symbolicznych
+\item \textbf{ENAMETOOLONG} Długość \textit{pathname} jest za długa.
+\item \textbf{ENOENT} \textit{pathname} jest pustą ścieżką lub taka ścieżka nie istnieje.
+
+\item \textbf{ENOMEM}  Wymagana ilość pamięci jądra nie była dostępna.
+\item \textbf{ENOTDIR}  Komponent użyty w \textit{pathname} nie jest katalogiem.
+\item \textbf{EOVERFLOW} \textit{pathname} odnosi się do pliku którego rozmiar, numer i-węzła lub ilość bloków nie może być reprezentowana odpowiedni typami: off\_t, ino\_t, blkcnt\_t. Błąd ten występuje gdy aplikacja skompilowana na platformie 32-bitowej bez \textit{-D\_FILE\_OFFSET\_BITS=64} wywoła \textit{stat()} z użyciem pliku, który jest większy niż (1<<31)-1 bajtów.
+
+
+
+\end{itemize}
+\textbf{Różnice między Linuxem a Solarisem}
+
+
+Nazwy argumentów na Solarisie są inne:
+
+\textit{pathname} nazywa się \textit{path},
+
+\textit{statbuf} nazywa się \textit{buf}
+
+W Solarisie  błąd \textbf{EPERM} nazywa się \textbf{ENOSYS}
+Struktura stat w systemie Solaris posiada małe różnice względem odpowiednika w systemie Linux.
+Kolejność zmiennych jest inna, brakuje także zmiennych czasu ostatniego dostępu, modyfikacji i zmiany statusu.
+Zmieniony jest także typ zmiennej \textit{st\_blksize} z \textit{blksize\_t} na \textit{long}.
+
+Jeśli chodzi o kody błędów to Solaris nie ma błędu dotyczącego przekroczenia pamięci jądra - \textbf{ENOMEM}, lecz posiada błąd \textbf{EINTR} - sygnał przerwał wykonywanie funkcji.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 \end{document}
