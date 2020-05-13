@@ -12,7 +12,9 @@
 
 \section{Temat - 1}
 \subsection{\textit{creat()}}
-Wywołanie tej funkcji jest ekwiwalente do wywołania funkcji \textbf{open()} z flagami O\_CREAT, O\_WRONLY, O\_TRUNC. Otwiera ona plik w trybie zapisu, oraz tworzy nowy plik lub już istniejący przycina do zera. Zwraca deskryptor pliku, który jest liczbą całkowitą 32 bitową, w języku C jest to typ odpowiadający \textit{int}.
+Wywołanie funkcji \textit{creat()} jest ekwiwalente do wywołania funkcji \textbf{open()} z flagami O\_CREAT, O\_WRONLY, O\_TRUNC.
+Otwiera ona plik w trybie zapisu, oraz tworzy nowy plik lub już istniejący przycina do zera.
+Zwraca deskryptor pliku, który jest liczbą całkowitą 32 bitową, w języku C jest to typ odpowiadający \textit{int}.
 
 Flaga O\_CREAT tworzy zwykły plik na podanej ścieżce dostępu jeżeli nie istniała ona w chwili wywołania funkcji. Efektem tego jest plik, którego właścicielem jest użytkownik, który stworzył proces wywołujący tę funkcję.
 
@@ -38,18 +40,31 @@ W takim przypadku, zmienna globalna \textit{errno} jest ustawiona na wartością
 iż ścieżka przez, która należałoby przejść aby dostać się do pliku nie zezwala na to.
 Również sam plik może nie zezwalać nam na jego otworzenie lub modyfikację.
 \item \textbf{EDQUOT} - brak miejsca na dysku dla wywołującego użytkownika.
+\item \textbf{EEXIST} - ścieżka już istnieje oraz O\_CREAT i O\_EXCL zostały użyte.
+\item \textbf{EFAULT} - łańcuch znaków ścieżki wskazuje na niedostępny adres pamięci.
 \item \textbf{EINTR} - sygnał przerwał wykonywanie funkcji.
+\item \textbf{EINVAL} - system plików wskazywany przez ścieżke nie wspiera O\_DIRECT;
+	niepoprawna flaga lub flaga O\_TMPFILE została przesłana lecz O\_WRONLY ani
+	O\_RDWR nie została przesłana.
 \item \textbf{EISDIR} - wskazana ścieżka jest już folderem.
-\item \textbf{ELOOP} - Podczas przechodzenia przez ścieżkę zbyt wiele linków symbolicznych zostało napotkanych.
-\item \textbf{EMFILE} - Proces, ma otworzonych zbyt wiele plików.
-\item \textbf{ENOENT} - Cześć ścieżki dostępu nie istnieje lub ścieżka dostępu jest pusta.
+\item \textbf{ELOOP} - Podczas przechodzenia przez ścieżkę zbyt wiele linków symbolicznych zostało napotkanych, ścieżka jest linkiem symbolicznym i flaga O\_NOFOLLOW została przesłana
+	lecz nie O\_PATH.
+\item \textbf{EMFILE} - proces, ma otworzonych zbyt wiele plików.
+\item \textbf{ENAMETOOLONG} - ścieżka jest zbyt długa.
+\item \textbf{ENFILE} - systemowy limit ilości otworzonych plików został przekroczony.
+\item \textbf{ENODEV} - ścieżka wskazuje na plik urządzenia lecz nie istnieje takie urządzenie.
+\item \textbf{ENOENT} - część ścieżki dostępu nie istnieje lub ścieżka dostępu jest pusta.
+\item \textbf{ENOSPC} - ścieżka miała zostać stworzona lecz, urzędzenie zawierające scieżke ma zbyt mało miejsca na nowy plik.
+\item \textbf{ENOTDIR} - ścieżka użyta jako folder nie jest foledrem, lub gdy przesłana została flaga O\_DIRECTORY ściezka jest plikiem.
+\item \textbf{ENXIO} - ścieżka jest plikiem urządzenia lecz nie istnieje takie urządzenie lub plik jest \textit{socket'em} UNIX'a.
+\item \textbf{EOPNOTSUPP} - system plików zawierający się w ścieżce nie wspiera O\_TMPFILE.
 \end{itemize}
 
 Nie istnieją duże różnice pomiędzy tą funkcją na jądrze Linux a na jądrze znajdującym się na systemie Solarisie.
 Funkcje odpowiadają temu samemu wywołaniu funkcji \textbf{open()} oraz zachowują się tak samo.
 
 \subsection{\textit{open()}}
-Jest wiele efektów wywołania tej funkcji zależnie od podanych jej argumentów.
+Funkcja \textit{open()} potrafi wykonać wiele różnych rzeczy zależnie od podanych jej argumentów.
 Lecz jej głównym zadaniem jest otworzenie jakiegoś pliku i zwrócenie do niego deskryptora.
 
 Do funkcji przesyłana jest ścieżka dostępu, ewentualne flagi zmieniające jej działanie oraz możliwe jest przesłanie jej permisji pliku.
@@ -58,7 +73,7 @@ Po wywołaniu zwraca wartość taką jak w przypadku funkcji \textbf{creat()}.
 Argument ścieżki oraz permisji pliku są identyczne jak w wyżej opisanej funkcji \textbf{creat()}.
 
 Flagi przesłane do funkcji zmieniają wiele rzeczy, najprostsze z nich otwierają plik w innych trybach odczytu/zapisu.
-O\_RDONLY, O\_WRONLY, O\_RDWR i O\_APPEND odpowiadają następująco otworzenie w trybie tylko odczytu, tylko zapisu, odczyt i zapis oraz tryb dodawania do pliku zamiast przyciana go do zera.
+O\_RDONLY, O\_WRONLY, O\_RDWR i O\_APPEND odpowiadają następująco; otworzenie w trybie tylko odczytu, tylko zapisu, odczyt i zapis oraz tryb dodawania do pliku zamiast przyciana go do zera.
 
 \begin{itemize}
 \item \textbf{O\_CREAT} - opisane w przykładzie funkcji \textbf{creat()}
@@ -73,7 +88,7 @@ W takim przypadku, zmienna globalna \textit{errno} jest ustawiona na wartością
 Wszystkie błędy są identyczne jak w przyadku funckji \textbf{creat()}.
 
 Funkcja ta na Linux'ie posiada więcej flag jakie można ustawić, jako przykałdy można wymienić: \textbf{O\_ASYNC}, \textbf{O\_DIRECTORY}.
-Ponieważ jest więcej flag, które można ustawić, istnieje również więcej błędów jakie na jakie może napotkać funkcja. 
+Ponieważ jest więcej flag, które można ustawić, istnieje również więcej błędów na jakie może napotkać funkcja. 
 
 \subsection{\textit{read()}}
 Funkcja ta będzie odczytywać $n$ bajtów z przesłanego deskryptora pliku do miejsca w pamięci,
@@ -174,7 +189,6 @@ Funkcja zwraca wartość zero gdy się powiedzie, w wypadku błędu zwraca warto
 \item \textbf{ENAMETOOLONG} Długość któregoś z argumentów 
 przekracza wartość w zmiennej globalnej PATH\_MAX
 \item \textbf{ENOENT}  \textit{target} lub \textit{linkpath} jest pustą ścieżką, taka ścieżka nie istnieje lub \textit{linkpath} jest wiszącym dowiązaniem symbolicznym. 
-
 \item \textbf{ENOMEM}  Wymagana ilość pamięci jądra nie była dostępna.
 \item \textbf{ENOSPC}  Ścieżka w której miało znajdować się dowiązanie nie może być rozszerzone.
 \item \textbf{ENOTDIR}  Komponent użyty w jednej z podanych ścieżek nie jest katalogiem.
