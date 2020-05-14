@@ -12,7 +12,7 @@
 
 \section{Temat - 1}
 \subsection{\textit{creat()}}
-Wywołanie funkcji \textit{creat()} jest ekwiwalente do wywołania funkcji \textbf{open()} z flagami O\_CREAT, O\_WRONLY, O\_TRUNC.
+Wywołanie funkcji \textit{creat()} jest ekwiwalentne do wywołania funkcji \textbf{open()} z flagami O\_CREAT, O\_WRONLY, O\_TRUNC.
 Otwiera ona plik w trybie zapisu, oraz tworzy nowy plik lub już istniejący przycina do zera.
 Zwraca deskryptor pliku, który jest liczbą całkowitą 32 bitową, w języku C jest to typ odpowiadający \textit{int}.
 
@@ -22,18 +22,18 @@ O\_WRONLY oznacza otworzenie pliku tylko w trybie zapisu.
 
 O\_TRUNC informuje funkcję, że jeżeli plik na podanej ścieżce dostępu już istnieje i jest zwykłym plikiem oraz użytkownik ma do niego dostęp, to jest on przycięty do zera.
 
-Funkcja do poprawnego wywołania przyjmuje dwa argumenty ścieżke do otworzenia oraz permisje jakie mają zostać nadane nowo stworzonemu plikowi.
+Funkcja do poprawnego wywołania przyjmuje dwa argumenty ścieżkę do otworzenia oraz permisje jakie mają zostać nadane nowo stworzonemu plikowi.
 
 Ścieżka dostępu jest stałym łańcuchem znaków, który jest interpretowany tak jak w środowisku Unix.
 Ścieżka zaczynająca się od `/' jest interpretowana jako absolutna, natomiast inne jako relatywne do
 ścieżki, w której obecnie znajduje się proces.
 
 Permisje są używane gdy plik w czasie wywołania funkcji nie istniał i zostaje on stworzony.
-Przesłane permisje są mu wtedy nadane, permisja taka jest storzona poprzez logiczny operator
+Przesłane permisje są mu wtedy nadane, permisja taka jest stworzona poprzez logiczny operator
 \textit{or} w języku C oznaczany symbolem `|'. Należy połączyć dostarczone przez system stałe,
 w taki sposób aby nowy plik uzyskał żądane permisje.
 
-Funckja zwraca deskryptor pliku, lub wartość równą $-1$ gdy wystąpił błąd.
+Funkcja zwraca deskryptor pliku, lub wartość równą $-1$ gdy wystąpił błąd.
 W takim przypadku, zmienna globalna \textit{errno} jest ustawiona na wartością opisującą błąd.
 \begin{itemize}
 \item \textbf{EACCES} - do podanej ścieżki nie mamy dostępu. Zawiera to w sobie również,
@@ -43,7 +43,7 @@ Również sam plik może nie zezwalać nam na jego otworzenie lub modyfikację.
 \item \textbf{EEXIST} - ścieżka już istnieje oraz O\_CREAT i O\_EXCL zostały użyte.
 \item \textbf{EFAULT} - łańcuch znaków ścieżki wskazuje na niedostępny adres pamięci.
 \item \textbf{EINTR} - sygnał przerwał wykonywanie funkcji.
-\item \textbf{EINVAL} - system plików wskazywany przez ścieżke nie wspiera O\_DIRECT;
+\item \textbf{EINVAL} - system plików wskazywany przez ścieżkę nie wspiera O\_DIRECT;
 	niepoprawna flaga lub flaga O\_TMPFILE została przesłana lecz O\_WRONLY ani
 	O\_RDWR nie została przesłana.
 \item \textbf{EISDIR} - wskazana ścieżka jest już folderem.
@@ -54,8 +54,8 @@ Również sam plik może nie zezwalać nam na jego otworzenie lub modyfikację.
 \item \textbf{ENFILE} - systemowy limit ilości otworzonych plików został przekroczony.
 \item \textbf{ENODEV} - ścieżka wskazuje na plik urządzenia lecz nie istnieje takie urządzenie.
 \item \textbf{ENOENT} - część ścieżki dostępu nie istnieje lub ścieżka dostępu jest pusta.
-\item \textbf{ENOSPC} - ścieżka miała zostać stworzona lecz, urzędzenie zawierające scieżke ma zbyt mało miejsca na nowy plik.
-\item \textbf{ENOTDIR} - ścieżka użyta jako folder nie jest foledrem, lub gdy przesłana została flaga O\_DIRECTORY ściezka jest plikiem.
+\item \textbf{ENOSPC} - ścieżka miała zostać stworzona lecz, urządzenie zawierające ścieżkę ma zbyt mało miejsca na nowy plik.
+\item \textbf{ENOTDIR} - ścieżka użyta jako folder nie jest folderem, lub gdy przesłana została flaga O\_DIRECTORY ścieżka jest plikiem.
 \item \textbf{ENXIO} - ścieżka jest plikiem urządzenia lecz nie istnieje takie urządzenie lub plik jest \textit{socket'em} UNIX'a.
 \item \textbf{EOPNOTSUPP} - system plików zawierający się w ścieżce nie wspiera O\_TMPFILE.
 \end{itemize}
@@ -73,21 +73,21 @@ Po wywołaniu zwraca wartość taką jak w przypadku funkcji \textbf{creat()}.
 Argument ścieżki oraz permisji pliku są identyczne jak w wyżej opisanej funkcji \textbf{creat()}.
 
 Flagi przesłane do funkcji zmieniają wiele rzeczy, najprostsze z nich otwierają plik w innych trybach odczytu/zapisu.
-O\_RDONLY, O\_WRONLY, O\_RDWR i O\_APPEND odpowiadają następująco; otworzenie w trybie tylko odczytu, tylko zapisu, odczyt i zapis oraz tryb dodawania do pliku zamiast przyciana go do zera.
+O\_RDONLY, O\_WRONLY, O\_RDWR i O\_APPEND odpowiadają następująco; otworzenie w trybie tylko odczytu, tylko zapisu, odczyt i zapis oraz tryb dodawania do pliku zamiast nadpisywania go do zera.
 
 \begin{itemize}
 \item \textbf{O\_CREAT} - opisane w przykładzie funkcji \textbf{creat()}
 \item \textbf{O\_LARGEFILE} - zezwala na używanie przesunięcia w pliku większego niż $2^{32}$
-\item \textbf{O\_NONBLOCK} - otwiera plik bez blokowania programu i czekania aż plik się otworzy. Zwracany jest deskryptor pliku lecz nie jest od odrazu gotowy do użycia
+\item \textbf{O\_NONBLOCK} - otwiera plik bez blokowania programu i czekania aż plik się otworzy. Zwracany jest deskryptor pliku lecz nie jest od od razu gotowy do użycia
 \item \textbf{O\_SYNC} - podczas zapisu do pliku proces jest blokowany do momentu dostarczenia danych do zapisywanego sprzętu
 \item \textbf{O\_TRUNC} - opisane w przykładzie funkcji \textbf{creat()}
 \end{itemize}
 
-Funckja zwraca deskryptor pliku, lub wartość równą $-1$ gdy wystąpił błąd.
+Funkcja zwraca deskryptor pliku, lub wartość równą $-1$ gdy wystąpił błąd.
 W takim przypadku, zmienna globalna \textit{errno} jest ustawiona na wartością opisującą błąd.
-Wszystkie błędy są identyczne jak w przyadku funckji \textbf{creat()}.
+Wszystkie błędy są identyczne jak w przypadku funkcji \textbf{creat()}.
 
-Funkcja ta na Linux'ie posiada więcej flag jakie można ustawić, jako przykałdy można wymienić: \textbf{O\_ASYNC}, \textbf{O\_DIRECTORY}.
+Funkcja ta na Linux'ie posiada więcej flag jakie można ustawić, jako przykłady można wymienić: \textbf{O\_ASYNC}, \textbf{O\_DIRECTORY}.
 Ponieważ jest więcej flag, które można ustawić, istnieje również więcej błędów na jakie może napotkać funkcja. 
 
 \subsection{\textit{read()}}
@@ -96,12 +96,12 @@ które jest buforem wskazanym przez użytkownika.
 
 Funkcja zostaje wywołana z określonym deskryptorem, adresem, które jest buforem oraz ilością $n$ bajtów, które mają zostać wczytane. Funkcja zwraca wartość typu \textit{ssize\_t}, która określa ilość wczytanych bajtów lub informuje o błędzie.
 
-Deskryptor plików monżna otrzymać poprzez użycie funkcji \textbf{open()} lub \textbf{creat()}.
+Deskryptor plików można otrzymać poprzez użycie funkcji \textbf{open()} lub \textbf{creat()}.
 Bufor, do którego dane będą wczytywane użytkownik musi stworzyć odpowiednio duży, ponieważ funkcja nie sprawdza czy ma możliwość zapisywania do danego miejsca w pamięci.
 $n$ bajtów, które zostaną wczytane są liczbą całkowitą typu \textit{size\_t}.
 Oznacza to, że maksymalna ilość bajtów jaka może zostać wczytana jest ograniczona przez architekturę bitową systemu operacyjnego, na którym skompilowany został program.
 
-Funckja zwraca ilość wczytanych bajtów, lub wartość równą $-1$ gdy wystąpił błąd.
+Funkcja zwraca ilość wczytanych bajtów, lub wartość równą $-1$ gdy wystąpił błąd.
 W takim przypadku, zmienna globalna \textit{errno} jest ustawiona na wartością opisującą błąd.
 
 \begin{itemize}
@@ -301,7 +301,7 @@ Nazwy argumentów na Solarisie są inne:
 \textit{statbuf} nazywa się \textit{buf}
 
 W Solarisie  błąd \textbf{EPERM} nazywa się \textbf{ENOSYS}
-Struktura stat w systemie Solaris posiada małe różnice względem odpowiednika w systemie Linux.
+Struktura \textit{stat} w systemie Solaris posiada małe różnice względem odpowiednika w systemie Linux.
 Kolejność zmiennych jest inna, brakuje także zmiennych czasu ostatniego dostępu, modyfikacji i zmiany statusu.
 Zmieniony jest także typ zmiennej \textit{st\_blksize} z \textit{blksize\_t} na \textit{long}.
 
