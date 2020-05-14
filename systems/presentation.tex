@@ -1,4 +1,4 @@
-\documentclass{article}
+\documentclass{beamer}
 \title{Referat - Systemy operacyjne i administracja}
 \author{Mateusz Radomski \and Michał Posłuszny}
 \date{gr lab. 8, IT Rok I \\ Numery indeksów: 400569, 401341 }
@@ -9,31 +9,47 @@
 
 \begin{document}
 \maketitle
-\section{Temat - 1}
-\subsection{\textit{creat()}}
-Wywołanie funkcji \textit{creat()} jest ekwiwalentne do wywołania funkcji \textbf{open()} z flagami O\_CREAT, O\_WRONLY, O\_TRUNC.
-Otwiera ona plik w trybie zapisu, oraz tworzy nowy plik lub już istniejący przycina do zera.
-Zwraca deskryptor pliku, który jest liczbą całkowitą 32 bitową, w języku C jest to typ odpowiadający \textit{int}.
+\begin{frame}
+	\frametitle{creat()}
+	Wywołanie funkcji \textit{creat()} jest ekwiwalentne do wywołania funkcji \textbf{open()} z flagami O\_CREAT, O\_WRONLY, O\_TRUNC.
+	Otwiera ona plik w trybie zapisu, oraz tworzy nowy plik lub już istniejący przycina do zera.
+	Zwraca deskryptor pliku, który jest liczbą całkowitą 32 bitową, w języku C jest to typ odpowiadający \textit{int}.
+\end{frame}
 
-Flaga O\_CREAT tworzy zwykły plik na podanej ścieżce dostępu jeżeli nie istniała ona w chwili wywołania funkcji. Efektem tego jest plik, którego właścicielem jest użytkownik, który stworzył proces wywołujący tę funkcję.
+\begin{frame}
+	\frametitle{creat()}
+	Flaga O\_CREAT tworzy zwykły plik na podanej ścieżce dostępu jeżeli nie istniała ona w chwili wywołania funkcji. Efektem tego jest plik, którego właścicielem jest użytkownik, który stworzył proces wywołujący tę funkcję.
 
-O\_WRONLY oznacza otworzenie pliku tylko w trybie zapisu.
+	O\_WRONLY oznacza otworzenie pliku tylko w trybie zapisu.
 
-O\_TRUNC informuje funkcję, że jeżeli plik na podanej ścieżce dostępu już istnieje i jest zwykłym plikiem oraz użytkownik ma do niego dostęp, to jest on przycięty do zera.
+	O\_TRUNC informuje funkcję, że jeżeli plik na podanej ścieżce dostępu już istnieje i jest zwykłym plikiem oraz użytkownik ma do niego dostęp, to jest on przycięty do zera.
+\end{frame}
 
+\begin{frame}
+	\frametitle{creat()}
 Funkcja do poprawnego wywołania przyjmuje dwa argumenty ścieżkę do otworzenia oraz permisje jakie mają zostać nadane nowo stworzonemu plikowi.
 
 Ścieżka dostępu jest stałym łańcuchem znaków, który jest interpretowany tak jak w środowisku Unix.
 Ścieżka zaczynająca się od `/' jest interpretowana jako absolutna, natomiast inne jako relatywne do
 ścieżki, w której obecnie znajduje się proces.
+\end{frame}
 
+\begin{frame}
+	\frametitle{creat()}
 Permisje są używane gdy plik w czasie wywołania funkcji nie istniał i zostaje on stworzony.
 Przesłane permisje są mu wtedy nadane, permisja taka jest stworzona poprzez logiczny operator
 \textit{or} w języku C oznaczany symbolem `|'. Należy połączyć dostarczone przez system stałe,
 w taki sposób aby nowy plik uzyskał żądane permisje.
+\end{frame}
 
+\begin{frame}
+	\frametitle{creat()}
 Funkcja zwraca deskryptor pliku, lub wartość równą $-1$ gdy wystąpił błąd.
 W takim przypadku, zmienna globalna \textit{errno} jest ustawiona na wartością opisującą błąd.
+\end{frame}
+
+\begin{frame}
+	\frametitle{creat()}
 \begin{itemize}
 \item \textbf{EACCES} - do podanej ścieżki nie mamy dostępu. Zawiera to w sobie również,
 iż ścieżka przez, która należałoby przejść aby dostać się do pliku nie zezwala na to.
@@ -42,6 +58,12 @@ Również sam plik może nie zezwalać nam na jego otworzenie lub modyfikację.
 \item \textbf{EEXIST} - ścieżka już istnieje oraz O\_CREAT i O\_EXCL zostały użyte.
 \item \textbf{EFAULT} - łańcuch znaków ścieżki wskazuje na niedostępny adres pamięci.
 \item \textbf{EINTR} - sygnał przerwał wykonywanie funkcji.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{creat()}
+	\begin{itemize}
 \item \textbf{EINVAL} - system plików wskazywany przez ścieżkę nie wspiera O\_DIRECT;
 	niepoprawna flaga lub flaga O\_TMPFILE została przesłana lecz O\_WRONLY ani
 	O\_RDWR nie została przesłana.
@@ -51,6 +73,12 @@ Również sam plik może nie zezwalać nam na jego otworzenie lub modyfikację.
 \item \textbf{EMFILE} - proces, ma otworzonych zbyt wiele plików.
 \item \textbf{ENAMETOOLONG} - ścieżka jest zbyt długa.
 \item \textbf{ENFILE} - systemowy limit ilości otworzonych plików został przekroczony.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{creat()}
+	\begin{itemize}
 \item \textbf{ENODEV} - ścieżka wskazuje na plik urządzenia lecz nie istnieje takie urządzenie.
 \item \textbf{ENOENT} - część ścieżki dostępu nie istnieje lub ścieżka dostępu jest pusta.
 \item \textbf{ENOSPC} - ścieżka miała zostać stworzona lecz, urządzenie zawierające ścieżkę ma zbyt mało miejsca na nowy plik.
@@ -58,9 +86,13 @@ Również sam plik może nie zezwalać nam na jego otworzenie lub modyfikację.
 \item \textbf{ENXIO} - ścieżka jest plikiem urządzenia lecz nie istnieje takie urządzenie lub plik jest \textit{socket'em} UNIX'a.
 \item \textbf{EOPNOTSUPP} - system plików zawierający się w ścieżce nie wspiera O\_TMPFILE.
 \end{itemize}
+\end{frame}
 
+\begin{frame}
+	\frametitle{creat()}
 Nie istnieją duże różnice pomiędzy tą funkcją na jądrze Linux a na jądrze znajdującym się na systemie Solarisie.
 Funkcje odpowiadają temu samemu wywołaniu funkcji \textbf{open()} oraz zachowują się tak samo.
+\end{frame}
 
 \subsection{\textit{open()}}
 Funkcja \textit{open()} potrafi wykonać wiele różnych rzeczy zależnie od podanych jej argumentów.
