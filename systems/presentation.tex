@@ -7,17 +7,19 @@
 \usepackage[T1]{fontenc}
 \usepackage[MeX]{polski}
 
+\usetheme{Frankfurt}
+
 \begin{document}
 \maketitle
 \begin{frame}
-	\frametitle{creat()}
+	\frametitle{creat() - efekt działania}
 	Wywołanie funkcji \textit{creat()} jest ekwiwalentne do wywołania funkcji \textbf{open()} z flagami O\_CREAT, O\_WRONLY, O\_TRUNC.
 	Otwiera ona plik w trybie zapisu, oraz tworzy nowy plik lub już istniejący przycina do zera.
 	Zwraca deskryptor pliku, który jest liczbą całkowitą 32 bitową, w języku C jest to typ odpowiadający \textit{int}.
 \end{frame}
 
 \begin{frame}
-	\frametitle{creat()}
+	\frametitle{creat() - efekt działania}
 	Flaga O\_CREAT tworzy zwykły plik na podanej ścieżce dostępu jeżeli nie istniała ona w chwili wywołania funkcji. Efektem tego jest plik, którego właścicielem jest użytkownik, który stworzył proces wywołujący tę funkcję.
 
 	O\_WRONLY oznacza otworzenie pliku tylko w trybie zapisu.
@@ -26,7 +28,7 @@
 \end{frame}
 
 \begin{frame}
-	\frametitle{creat()}
+	\frametitle{creat() - sposób wywołania, opis argumentów}
 Funkcja do poprawnego wywołania przyjmuje dwa argumenty ścieżkę do otworzenia oraz permisje jakie mają zostać nadane nowo stworzonemu plikowi.
 
 Ścieżka dostępu jest stałym łańcuchem znaków, który jest interpretowany tak jak w środowisku Unix.
@@ -35,7 +37,7 @@ Funkcja do poprawnego wywołania przyjmuje dwa argumenty ścieżkę do otworzeni
 \end{frame}
 
 \begin{frame}
-	\frametitle{creat()}
+	\frametitle{creat() - opis wywołania}
 Permisje są używane gdy plik w czasie wywołania funkcji nie istniał i zostaje on stworzony.
 Przesłane permisje są mu wtedy nadane, permisja taka jest stworzona poprzez logiczny operator
 \textit{or} w języku C oznaczany symbolem `|'. Należy połączyć dostarczone przez system stałe,
@@ -43,13 +45,13 @@ w taki sposób aby nowy plik uzyskał żądane permisje.
 \end{frame}
 
 \begin{frame}
-	\frametitle{creat()}
+	\frametitle{creat() - opis błędów}
 Funkcja zwraca deskryptor pliku, lub wartość równą $-1$ gdy wystąpił błąd.
 W takim przypadku, zmienna globalna \textit{errno} jest ustawiona na wartością opisującą błąd.
 \end{frame}
 
 \begin{frame}
-	\frametitle{creat()}
+	\frametitle{creat() - opis błędów}
 \begin{itemize}
 \item \textbf{EACCES} - do podanej ścieżki nie mamy dostępu. Zawiera to w sobie również,
 iż ścieżka przez, która należałoby przejść aby dostać się do pliku nie zezwala na to.
@@ -62,7 +64,7 @@ Również sam plik może nie zezwalać nam na jego otworzenie lub modyfikację.
 \end{frame}
 
 \begin{frame}
-	\frametitle{creat()}
+	\frametitle{creat() - opis błędów}
 	\begin{itemize}
 \item \textbf{EINVAL} - system plików wskazywany przez ścieżkę nie wspiera O\_DIRECT;
 	niepoprawna flaga lub flaga O\_TMPFILE została przesłana lecz O\_WRONLY ani
@@ -77,7 +79,7 @@ Również sam plik może nie zezwalać nam na jego otworzenie lub modyfikację.
 \end{frame}
 
 \begin{frame}
-	\frametitle{creat()}
+	\frametitle{creat() - opis błędów}
 	\begin{itemize}
 \item \textbf{ENODEV} - ścieżka wskazuje na plik urządzenia lecz nie istnieje takie urządzenie.
 \item \textbf{ENOENT} - część ścieżki dostępu nie istnieje lub ścieżka dostępu jest pusta.
@@ -89,23 +91,33 @@ Również sam plik może nie zezwalać nam na jego otworzenie lub modyfikację.
 \end{frame}
 
 \begin{frame}
-	\frametitle{creat()}
+	\frametitle{creat() - różnice pomiędzy Solarisem a Linuxem}
 Nie istnieją duże różnice pomiędzy tą funkcją na jądrze Linux a na jądrze znajdującym się na systemie Solarisie.
 Funkcje odpowiadają temu samemu wywołaniu funkcji \textbf{open()} oraz zachowują się tak samo.
 \end{frame}
 
-\subsection{\textit{open()}}
+\begin{frame}
+	\frametitle{open() - efekt działania}
 Funkcja \textit{open()} potrafi wykonać wiele różnych rzeczy zależnie od podanych jej argumentów.
 Lecz jej głównym zadaniem jest otworzenie jakiegoś pliku i zwrócenie do niego deskryptora.
+\end{frame}
 
+\begin{frame}
+	\frametitle{open() - sposób wywołania}
 Do funkcji przesyłana jest ścieżka dostępu, ewentualne flagi zmieniające jej działanie oraz możliwe jest przesłanie jej permisji pliku.
 Po wywołaniu zwraca wartość taką jak w przypadku funkcji \textbf{creat()}.
+\end{frame}
 
+\begin{frame}
+	\frametitle{open() - opis argumentów}
 Argument ścieżki oraz permisji pliku są identyczne jak w wyżej opisanej funkcji \textbf{creat()}.
 
 Flagi przesłane do funkcji zmieniają wiele rzeczy, najprostsze z nich otwierają plik w innych trybach odczytu/zapisu.
 O\_RDONLY, O\_WRONLY, O\_RDWR i O\_APPEND odpowiadają następująco; otworzenie w trybie tylko odczytu, tylko zapisu, odczyt i zapis oraz tryb dodawania do pliku zamiast nadpisywania go do zera.
+\end{frame}
 
+\begin{frame}
+	\frametitle{open() - opis argumentów}
 \begin{itemize}
 \item \textbf{O\_CREAT} - opisane w przykładzie funkcji \textbf{creat()}
 \item \textbf{O\_LARGEFILE} - zezwala na używanie przesunięcia w pliku większego niż $2^{32}$
@@ -113,25 +125,42 @@ O\_RDONLY, O\_WRONLY, O\_RDWR i O\_APPEND odpowiadają następująco; otworzenie
 \item \textbf{O\_SYNC} - podczas zapisu do pliku proces jest blokowany do momentu dostarczenia danych do zapisywanego sprzętu
 \item \textbf{O\_TRUNC} - opisane w przykładzie funkcji \textbf{creat()}
 \end{itemize}
+\end{frame}
 
+\begin{frame}
+	\frametitle{open() - opis błędów}
 Funkcja zwraca deskryptor pliku, lub wartość równą $-1$ gdy wystąpił błąd.
 W takim przypadku, zmienna globalna \textit{errno} jest ustawiona na wartością opisującą błąd.
 Wszystkie błędy są identyczne jak w przypadku funkcji \textbf{creat()}.
+\end{frame}
 
+\begin{frame}
+	\frametitle{open() - różnice pomiedzy Solarisem a Linuxem}
 Funkcja ta na Linux'ie posiada więcej flag jakie można ustawić, jako przykłady można wymienić: \textbf{O\_ASYNC}, \textbf{O\_DIRECTORY}.
 Ponieważ jest więcej flag, które można ustawić, istnieje również więcej błędów na jakie może napotkać funkcja. 
+\end{frame}
 
-\subsection{\textit{read()}}
+\begin{frame}
+	\frametitle{read() - efekt działania}
 Funkcja ta będzie odczytywać $n$ bajtów z przesłanego deskryptora pliku do miejsca w pamięci,
 które jest buforem wskazanym przez użytkownika.
+\end{frame}
 
+\begin{frame}
+	\frametitle{read() - sposób wywołania}
 Funkcja zostaje wywołana z określonym deskryptorem, adresem, które jest buforem oraz ilością $n$ bajtów, które mają zostać wczytane. Funkcja zwraca wartość typu \textit{ssize\_t}, która określa ilość wczytanych bajtów lub informuje o błędzie.
+\end{frame}
 
+\begin{frame}
+	\frametitle{read() - opis argumentów}
 Deskryptor plików można otrzymać poprzez użycie funkcji \textbf{open()} lub \textbf{creat()}.
 Bufor, do którego dane będą wczytywane użytkownik musi stworzyć odpowiednio duży, ponieważ funkcja nie sprawdza czy ma możliwość zapisywania do danego miejsca w pamięci.
 $n$ bajtów, które zostaną wczytane są liczbą całkowitą typu \textit{size\_t}.
 Oznacza to, że maksymalna ilość bajtów jaka może zostać wczytana jest ograniczona przez architekturę bitową systemu operacyjnego, na którym skompilowany został program.
+\end{frame}
 
+\begin{frame}
+	\frametitle{read() - opis błędów}
 Funkcja zwraca ilość wczytanych bajtów, lub wartość równą $-1$ gdy wystąpił błąd.
 W takim przypadku, zmienna globalna \textit{errno} jest ustawiona na wartością opisującą błąd.
 
@@ -144,25 +173,34 @@ W takim przypadku, zmienna globalna \textit{errno} jest ustawiona na wartością
 \item \textbf{ENOLINK} - przesłany deskryptor jest linkiem do nieaktywnej maszyny zewnętrznej.
 \item \textbf{ESPIPE} - przesłany deskryptor jest powiązany z \textit{pipe}'em.
 \end{itemize}
+\end{frame}
 
+\begin{frame}
+	\frametitle{read() - różnice pomiędzy Solarisem a Linuxem}
 Istnieje różnica pomiędzy wersją tej tej funkcji na systemie Solaris a systemie Linux.
 W przypadku wywołania jej z argumentem deskryptora pliku będącego \textit{socket'em} wywołanie to jest równoważne z wywołaniem funkcji \textbf{recv()} bez flag.
+\end{frame}
 
-  
-\section{Temat - 3}
-\subsection{\textit{link()}}
+\begin{frame}
+	\frametitle{link() - efekt działania}
 Wywołując komendę link tworzymy nowe dowiązanie (zwane też twardym, ang. hard link) najczęściej w innej lokalizacji. Nasza nowa nazwa pliku może być używana dokładnie tak samo jak stara w dowolnych operacjach, ponieważ obie nazwy odnoszą się do tego samego pliku, więc ich właściciel jak i prawa pozostają identyczne, przez co niemożliwe jest wskazania oryginału.
+\end{frame}
 
+\begin{frame}
+	\frametitle{link() - sposób wywołania}
 Funkcja jest wywoływana z określonym położeniem pliku i położeniem naszego dowiązania. Po wykonaniu zwraca wartość zero, w przypadku błędu zwraca -1 i ustawia zmienną globalną \textit{errno} na wartość opisującą odpowiedni błąd.
+\end{frame}
 
-
-\textbf{Argumentami} tej funkcji są kolejno:
+\begin{frame}
+	\frametitle{link() - opis argumentów}
 \begin{itemize}
 \item \textbf{oldpath} - ścieżka do naszego pliku
 \item \textbf{newpath} - ścieżka w której chcemy utworzyć dowiązanie (w momencie w którym w ścieżce newpath plik już istnieje, dowiązanie nie zostanie utworzone a plik nie zostanie nadpisany)
 \end{itemize}
+\end{frame}
 
-\textbf{Opis błędów}
+\begin{frame}
+	\frametitle{link() - opis błędów}
 \begin{itemize}
 \item \textbf{EACCES} zapis do lokalizacji w której jest \textit{newpath} nie jest dozwolony, bądź \textit{oldpath} lub \textit{newpath} nie daje uprawnień wykonywania (przeszukiwania katalogu).
 \item \textbf{EDQUOT} wyczerpano limit bloków dysku użytkownika w tym systemie plików.
@@ -171,6 +209,12 @@ Funkcja jest wywoływana z określonym położeniem pliku i położeniem naszego
 \item \textbf{EIO} Wystąpił błąd fizyczny z urządzeniem Wejścia/Wyjścia
 \item \textbf{ELOOP} Podczas przetwarzania \textit{oldpath} lub \textit{newpath} napotkano zbyt dużo dowiązań symbolicznych
 \item \textbf{EMLINK} Plik do którego odnosi się \textit{oldpath} posiada już maksymalną ilość dowiązań. W systemie \textit{ext4} maksymalna liczba twardych dowiązań to 65,000 
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{link() - opis błędów}
+\begin{itemize}
 \item \textbf{ENAMETOOLONG} Długość któregoś z argumentów 
 przekracza wartość w zmiennej globalnej PATH\_MAX
 \item \textbf{ENOENT}  \textit{oldpath} lub \textit{newpath} jest pustą ścieżką, taka ścieżka nie istnieje lub plik  \textit{oldpath} nie istnieje
@@ -179,37 +223,44 @@ przekracza wartość w zmiennej globalnej PATH\_MAX
 \item \textbf{ENOTDIR}  Komponent użyty w jednej z podanych ścieżek nie jest katalogiem.
 \item \textbf{EPERM} system plików w których znajdują się \textit{oldpath} i \textit{newpath} nie obsługuje tworzenia dowiązań.
 \item \textbf{EROFS} zarządane dowiązanie wymaga zapisu w ścieżce w systemie plików tylko do odczytu.
-
 \item \textbf{EXDEV} \textit{oldpath} i \textit{newpath} leżą w innych systemach plików.
-
-
 \end{itemize}
-\textbf{Różnice między Linuxem a Solarisem}
+\end{frame}
+
+\begin{frame}
+	\frametitle{link() - różnice pomiędzy Solarisem a Linuxem}
 Nazwy argumentów na Solarisie są inne:
 \textit{newpath} nazywa się \textit{new},
 \textit{oldpath} nazywa się \textit{existing}
 Zamiast błędu \textbf{EIO} w Solarisie możemy napotkać błąd
 \textbf{EINTR} Napotkano sygnał podczas wykonywania funkcji link.
+\end{frame}
 
-
-\subsection{\textit{symlink()}}
-
+\begin{frame}
+	\frametitle{symlink() - efekt działania}
 Funkcja symlink tworzy dowiązanie symboliczne (miękkie dowiązanie), o nazwie \textit{linkpath} który zawiera łańcuch znaków pliku \textit{target}. Dowiązania symboliczne mogą zawierać składniki .., które w przypadku użycia na początku dowiązania odnoszą się do katalogów nadrzędnych ścieżki w której utworzono dowiązanie.
 
 Istnieje przypadek w którym dowiązanie symboliczne może wskazywać na nieistniejący plik, jest to tak zwane wiszące dowiązanie.
 
 Prawa dostęp do dowiązania symbolicznego są nieistotne, ignoruje się jego właściciela w trakcie podążania za powiązaniem. Jednakże są one sprawdzane podczas usuwania bądź modyfikacji nazwy dowiązania gdy dowiązanie symboliczne znajduje się w katalogu z ustawionym bitem \textit{sticky} ( \textbf{S-ISVTX} ).
+\end{frame}
 
+\begin{frame}
+	\frametitle{symlink() - sposób wywołania}
 Podczas wywołania podaj się tak jak w przypadku funkcji link() ścieżkę do pliku i ścieżkę w której ma zostać utworzone dowiązanie.
-Funkcja zwraca wartość zero gdy się powiedzie, w wypadku błędu zwraca wartość -1 i ustawia zmienną globalną \textit{errno} na wartość opisującą odpowiedni błąd.
+\end{frame}
 
-\textbf{Argumentami} tej funkcji są kolejno:
+\begin{frame}
+	\frametitle{symlink() - opis argumentów}
 \begin{itemize}
 \item \textbf{target} - ścieżka do naszego pliku
 \item \textbf{linkpath} - ścieżka w której chcemy utworzyć dowiązanie (w momencie w którym w ścieżce newpath plik już istnieje, dowiązanie nie zostanie utworzone a plik nie zostanie nadpisany)
 \end{itemize}
+\end{frame}
 
-\textbf{Opis błędów}
+\begin{frame}
+	\frametitle{symlink() - opis błędów}
+Funkcja zwraca wartość zero gdy się powiedzie, w wypadku błędu zwraca wartość -1 i ustawia zmienną globalną \textit{errno} na wartość opisującą odpowiedni błąd.
 \begin{itemize}
 \item \textbf{EACCES} zapis do lokalizacji w której jest \textit{linkpath} nie jest dozwolony, bądź jeden z katalogów w ścieżce \textit{linkpath} nie daje uprawnień wykonywania (przeszukiwania katalogu).
 \item \textbf{EDQUOT} wyczerpano limit bloków dysku użytkownika w tym systemie plików.
@@ -217,6 +268,12 @@ Funkcja zwraca wartość zero gdy się powiedzie, w wypadku błędu zwraca warto
 \item \textbf{EFAULT} \textit{target} lub  \textit{linkpath} wskazuje na przestrzeń adresową niedostępną dla użytkownika.
 \item \textbf{EIO} Wystąpił błąd fizyczny z urządzeniem Wejścia/Wyjścia
 \item \textbf{ELOOP} Podczas przetwarzania \textit{linkpath} napotkano zbyt dużo dowiązań symbolicznych
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{symlink() - opis błędów}
+\begin{itemize}
 \item \textbf{ENAMETOOLONG} Długość któregoś z argumentów 
 przekracza wartość w zmiennej globalnej PATH\_MAX
 \item \textbf{ENOENT}  \textit{target} lub \textit{linkpath} jest pustą ścieżką, taka ścieżka nie istnieje lub \textit{linkpath} jest wiszącym dowiązaniem symbolicznym. 
@@ -225,13 +282,12 @@ przekracza wartość w zmiennej globalnej PATH\_MAX
 \item \textbf{ENOTDIR}  Komponent użyty w jednej z podanych ścieżek nie jest katalogiem.
 \item \textbf{EPERM} system plików w których znajduje się \textit{linkpath} nie obsługuje tworzenia symbolicznych dowiązań.
 \item \textbf{EROFS} zażądane dowiązanie wymaga zapisu w ścieżce w systemie plików tylko do odczytu.
-
-
-
 \end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{symlink() - różnice pomiędzy Solarisem a Linuxem}
 \textbf{Różnice między Linuxem a Solarisem}
-
-
 Nazwy argumentów na Solarisie są inne:
 
 \textit{linkpath} nazywa się \textit{name1},
@@ -240,34 +296,70 @@ Nazwy argumentów na Solarisie są inne:
 
 W Solarisie  błąd \textbf{EPERM} nazywa się \textbf{ENOSYS}
 Solaris nie posiada błędu informującego o niewystarczającej pamięci jądra \textbf{ENOMEM}
+\end{frame}
 
-
-\subsection{\textit{stat()}}
-
+\begin{frame}
+	\frametitle{stat() - efekt działania}
 Funkcja\textit{ stat()} zwraca informacje o podanym pliku w buforze wskazanym przez użytkownika. 
 Do uzyskania tej informacji nie są wymagane prawa dostępu do samego pliku, lecz wymagane są prawa wykonywania do wszystkich katalogów w ścieżce podanej przez użytkownika. 
+\end{frame}
 
+\begin{frame}
+	\frametitle{stat() - sposób wywołania}
 Funkcje\textit{ stat()} wywołuje się poprzez podanie ścieżki do pliku i buforu a jej rezultatem jest zwrócenie struktury \textit{stat} do podanego bufora. 
 
 Struktura \textit{stat} wygląda następująco:
-\begin{verbatim}
-struct stat {
-    dev_t     st_dev;      /* ID urządzenia na którym znajduje się plik */
-    ino_t     st_ino;      /* numer i-węzła */
-    mode_t    st_mode;     /* tryb i typ pliku */
-    nlink_t   st_nlink;    /* liczba stałych dowiązań */
-    uid_t     st_uid;      /* ID użytkownika właściciela */
-    gid_t     st_gid;      /* ID grupy właściciela */
-    dev_t     st_rdev;     /* ID urządzenia (dla pliku specjalnego) */
-    off_t     st_size;     /* rozmiar pliku w bajtach */
-    blksize_t st_blksize;  /* rozmiar bloku dla wyjścia/wejścia systemu pliku */
-    blkcnt_t  st_blocks;   /* ilość zaalokowanych bloków o rozmiarach 512-bajtów */
-    struct timespec st_atim;    /* czas ostatniego dostępu, jest zmieniany przy procedurach: */
-    struct timespec st_mtim;    /* czas ostatniej modyfikacji */
-    struct timespec st_ctim;    /* czas ostatniej zmiany informacji i-węzła, np. grupy, liczby dowiązań, praw itp. */
-    /* Ta struktura może różnić się w zależności od architektury */
-};
-\end{verbatim}
+\end{frame}
+
+\begin{frame}
+	\frametitle{stat() - sposób wywołania}
+struct stat \{\\
+    dev\_t     st\_dev;\\
+    ino\_t     st\_ino;\\
+    mode\_t    st\_mode;\\
+    nlink\_t   st\_nlink;\\
+    uid\_t     st\_uid;\\
+    gid\_t     st\_gid;\\
+    dev\_t     st\_rdev;\\
+    off\_t     st\_size;\\
+    blksize\_t st\_blksize;\\
+    blkcnt\_t  st\_blocks;\\
+    struct timespec st\_atim;\\
+    struct timespec st\_mtim;\\
+    struct timespec st\_ctim;\\
+\};
+\end{frame}
+
+\begin{frame}
+	\frametitle{stat() - efekt wywołania}
+Funkcja stat potrafi nam też podać informację o prawach danego pliku poprzez zastosowanie poniższych masek:
+\begin{description}
+\item[S\_ISUID]	04000	bit "set-used-ID"
+\item[S\_ISGID]	02000	bit "set-group-ID" 
+\item[S\_ISVTX]	01000	bit "sticky" tylko właściciel może zmieniać nazwę bądź usuwać dany plik lub katalog.
+\item[S\_IRWXU]	00700	właściciel ma prawa odczytu, zapisu i wykonania
+\item[S\_IRUSR]	00400	właściciel ma prawa odczytu
+\item[S\_IWUSR]	00200	właściciel ma prawa zapisu
+\item[S\_IXUSR]	00100	właściciel ma prawa wykonania
+\end{description}
+\end{frame}
+
+\begin{frame}
+	\frametitle{stat() - efekt wywołania}
+\begin{description}
+\item[S\_IRWXG]	00070	grupa ma prawa odczytu, zapisu i wykonania
+\item[S\_IRGRP]	00040	grupa ma prawa odczytu
+\item[S\_IWGRP]	00020	grupa ma prawa zapisu
+\item[S\_IXGRP]	00010	grupa ma prawa wykonania
+\item[S\_IRWXO]	00007	pozostali użytkownicy mają prawo odczytu, zapisu i wykonania
+\item[S\_IROTH]	00004	pozostali użytkownicy mają prawa odczytu
+\item[S\_IWOTH]	00002	pozostali użytkownicy mają prawa zapisu
+\item[S\_IXOTH]	00001	pozostali użytkownicy mają prawa wykonania
+\end{description}
+\end{frame}
+
+\begin{frame}
+	\frametitle{stat() - opis argumentów}
 Dla pola st\_mode istnieją zdefiniowane maski do typu pliku, są to kolejno:
 \begin{description}
 \item[S\_IFMT]	0170000	maska bitowa dla pola bitowego typu pliku
@@ -279,52 +371,37 @@ Dla pola st\_mode istnieją zdefiniowane maski do typu pliku, są to kolejno:
 \item[S\_IFCHR]	0020000	maska dla urządzenia znakowego
 \item[S\_IFIFO]	0010000	maska kolejki First In First Out
 \end{description}
-Funkcja stat potrafi nam też podać informację o prawach danego pliku poprzez zastosowanie poniższych masek:
-\begin{description}
+\end{frame}
 
-\item[S\_ISUID]	04000	bit "set-used-ID"
-\item[S\_ISGID]	02000	bit "set-group-ID" 
-\item[S\_ISVTX]	01000	bit "sticky" tylko właściciel może zmieniać nazwę bądź usuwać dany plik lub katalog.
-\item[S\_IRWXU]	00700	właściciel ma prawa odczytu, zapisu i wykonania
-\item[S\_IRUSR]	00400	właściciel ma prawa odczytu
-\item[S\_IWUSR]	00200	właściciel ma prawa zapisu
-\item[S\_IXUSR]	00100	właściciel ma prawa wykonania
-\item[S\_IRWXG]	00070	grupa ma prawa odczytu, zapisu i wykonania
-\item[S\_IRGRP]	00040	grupa ma prawa odczytu
-\item[S\_IWGRP]	00020	grupa ma prawa zapisu
-\item[S\_IXGRP]	00010	grupa ma prawa wykonania
-\item[S\_IRWXO]	00007	pozostali użytkownicy mają prawo odczytu, zapisu i wykonania
-\item[S\_IROTH]	00004	pozostali użytkownicy mają prawa odczytu
-\item[S\_IWOTH]	00002	pozostali użytkownicy mają prawa zapisu
-\item[S\_IXOTH]	00001	pozostali użytkownicy mają prawa wykonania
-\end{description}
-
-Funkcja zwraca wartość zero gdy się powiedzie, w wypadku błędu zwraca wartość -1 i ustawia zmienną globalną \textit{errno} na wartość opisującą odpowiedni błąd.
-
-\textbf{Argumentami} tej funkcji są kolejno:
+\begin{frame}
+	\frametitle{stat() - opis argumentów}
 \begin{itemize}
 \item \textbf{pathname} - ścieżka do naszego pliku który chcemy przeanalizować
 \item \textbf{statbuf} - bufor wskazany przez użytkownika, do którego funkcja przekaże parametry pliku podanego w \textit{pathname}
 \end{itemize}
+\end{frame}
 
-\textbf{Opis błędów}
+\begin{frame}
+	\frametitle{stat() - opis błędów}
+Funkcja zwraca wartość zero gdy się powiedzie, w wypadku błędu zwraca wartość -1 i ustawia zmienną globalną \textit{errno} na wartość opisującą odpowiedni błąd.
+\end{frame}
+
+\begin{frame}
+	\frametitle{stat() - opis błędów}
 \begin{itemize}
 \item \textbf{EACCES} brakujące uprawnienia wymagane do przeszukania jednego z katalogów w ścieżce \textit{pathname}
 \item \textbf{EFAULT} Zły adres.
 \item \textbf{ELOOP} Podczas przetwarzania ścieżki \textit{pathname} napotkano zbyt dużo dowiązań symbolicznych
 \item \textbf{ENAMETOOLONG} Długość \textit{pathname} jest za długa.
 \item \textbf{ENOENT} \textit{pathname} jest pustą ścieżką lub taka ścieżka nie istnieje.
-
 \item \textbf{ENOMEM}  Wymagana ilość pamięci jądra nie była dostępna.
 \item \textbf{ENOTDIR}  Komponent użyty w \textit{pathname} nie jest katalogiem.
 \item \textbf{EOVERFLOW} \textit{pathname} odnosi się do pliku którego rozmiar, numer i-węzła lub ilość bloków nie może być reprezentowana odpowiedni typami: off\_t, ino\_t, blkcnt\_t. Błąd ten występuje gdy aplikacja skompilowana na platformie 32-bitowej bez \textit{-D\_FILE\_OFFSET\_BITS=64} wywoła \textit{stat()} z użyciem pliku, który jest większy niż (1<<31)-1 bajtów.
-
-
-
 \end{itemize}
-\textbf{Różnice między Linuxem a Solarisem}
+\end{frame}
 
-
+\begin{frame}
+	\frametitle{stat() - różnice pomiędzy Solarisem a Linuxem}
 Nazwy argumentów na Solarisie są inne:
 
 \textit{pathname} nazywa się \textit{path},
@@ -337,30 +414,6 @@ Kolejność zmiennych jest inna, brakuje także zmiennych czasu ostatniego dost�
 Zmieniony jest także typ zmiennej \textit{st\_blksize} z \textit{blksize\_t} na \textit{long}.
 
 Jeśli chodzi o kody błędów to Solaris nie ma błędu dotyczącego przekroczenia pamięci jądra - \textbf{ENOMEM}, lecz posiada błąd \textbf{EINTR} - sygnał przerwał wykonywanie funkcji.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+\end{frame}
 
 \end{document}
