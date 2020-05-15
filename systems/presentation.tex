@@ -28,9 +28,26 @@
 \end{frame}
 
 \begin{frame}
-	\frametitle{creat() - sposób wywołania, opis argumentów}
+	\frametitle{creat() - sposób wywołania}
 Funkcja do poprawnego wywołania przyjmuje dwa argumenty ścieżkę do otworzenia oraz permisje jakie mają zostać nadane nowo stworzonemu plikowi.
+Aby dodać ją do pliku źrółowego należy dodać dwa pliki nagłówkowe \textbf{fctln.h} i \textbf{sys/stat.h} dyrektywą \textit{\#include}.
+\end{frame}
 
+\begin{frame}
+	\frametitle{creat() - sposób wywołania}
+\#include <fctln.h>\\
+\#include <sys/stat.h>\\
+int main()\\
+\{\\
+	const char *sciezka = "~/mojplik.txt";\\
+	mode\_t tryb = S\_IRWXU | S\_IRGRP | S\_IROTH;\\
+	int deskryptor = creat(sciezka, tryb);\\
+	return 0;\\
+\}
+\end{frame}
+
+\begin{frame}
+	\frametitle{creat() - opis argumentów}
 Ścieżka dostępu jest stałym łańcuchem znaków, który jest interpretowany tak jak w środowisku Unix.
 Ścieżka zaczynająca się od `/' jest interpretowana jako absolutna, natomiast inne jako relatywne do
 ścieżki, w której obecnie znajduje się proces.
@@ -106,6 +123,21 @@ Lecz jej głównym zadaniem jest otworzenie jakiegoś pliku i zwrócenie do nieg
 	\frametitle{open() - sposób wywołania}
 Do funkcji przesyłana jest ścieżka dostępu, ewentualne flagi zmieniające jej działanie oraz możliwe jest przesłanie jej permisji pliku.
 Po wywołaniu zwraca wartość taką jak w przypadku funkcji \textbf{creat()}.
+Następujące pliki nagłówkowe dodają ją do kodu źródłowego \textbf{fctln.h}, \textbf{sys/stat.h} oraz \textbf{sys/types.h}.
+\end{frame}
+
+\begin{frame}
+	\frametitle{open() - sposób wywołania}
+\#include <fctln.h>\\
+\#include <sys/stat.h>\\
+\#include <sys/types.h>\\
+int main()\\
+\{\\
+	const char *sciezka = "~/wczesniejutworzonyplik.txt";\\
+	int flagi = O\_RDONLY | O\_NOFOLLOW;\\
+	int deskryptor = open(sciezka, flagi);\\
+	return 0;\\
+\}
 \end{frame}
 
 \begin{frame}
@@ -149,6 +181,24 @@ które jest buforem wskazanym przez użytkownika.
 \begin{frame}
 	\frametitle{read() - sposób wywołania}
 Funkcja zostaje wywołana z określonym deskryptorem, adresem, które jest buforem oraz ilością $n$ bajtów, które mają zostać wczytane. Funkcja zwraca wartość typu \textit{ssize\_t}, która określa ilość wczytanych bajtów lub informuje o błędzie.
+Plik nagłówkowy \textbf{unistd.h} dodaje tę funkcję do kodu.
+\end{frame}
+
+\begin{frame}
+	\frametitle{read() - sposób wywołania}
+\#include <fctln.h>\\
+\#include <sys/stat.h>\\
+\#include <sys/types.h>\\
+\#include <unistd.h> // tutaj jest funkcja read()\\
+int main()\\
+\{\\
+	const char *sciezka = "~/wczesniejutworzonyplik.txt";\\
+	int flagi = O\_RDONLY | O\_NOFOLLOW;\\
+	int deskryptor = open(sciezka, flagi);\\
+	char bufor[128] = { 0 };\\
+	read(deskryptor, bufor, 128);\\
+	return 0;\\
+\}
 \end{frame}
 
 \begin{frame}
