@@ -12,6 +12,75 @@
 
 \begin{document}
 
+\defverbatim[colored]\lstcreat{
+\begin{lstlisting}[language=C,basicstyle=\tiny,keywordstyle=\color{black}]
+#include <fctln.h>
+#include <sys/stat.h>
+
+int main()
+{
+	// Sciezka, ktora ma otworzyc funkcja creat()
+	const char *sciezka = "~/mojplik.txt";
+	// Permisje jakie maja zostac nadane plikowi, jezeli zostanie stworzony
+	mode_t tryb = S_IRWXU | S_IRGRP | S_IROTH; // rownowazne 744
+	// Wywolanie funkcji i przypisanie zwroconego deskryptora do zmiennej
+	int deskryptor = creat(sciezka, tryb);
+
+	return 0;
+}
+\end{lstlisting}
+}
+
+\defverbatim[colored]\lstopen{
+\begin{lstlisting}[language=C,basicstyle=\tiny,keywordstyle=\color{black}]
+#include <fctln.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+
+int main()
+{
+	// Stworzenie lancucha znakow, ktory wskazuje
+	// na sciezke pliku ktory istnieje
+	const char *sciezka = "~/wczesniejutworzonyplik.txt";
+	// Flagi jakie maja zostac uzyte, otworzenie w odczycie
+	// i niepodazanie za linkami
+	int flagi = O_RDONLY | O_NOFOLLOW;
+	// przypisanie do zmiennej zwroconego deskryptora
+	int deskryptor = open(sciezka, flagi);
+
+	return 0;
+}
+\end{lstlisting}
+}
+
+\defverbatim[colored]\lstread{
+\begin{lstlisting}[language=C,basicstyle=\tiny,keywordstyle=\color{black}]
+#include <fctln.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+
+#include <unistd.h> // tutaj jest funkcja read()
+
+int main()
+{
+	// Uzyskanie deskryptora pliku
+	const char *sciezka = "~/wczesniejutworzonyplik.txt";
+	int flagi = O_RDONLY | O_NOFOLLOW;
+	int deskryptor = open(sciezka, flagi);
+
+	// Stworzenie bufora o rozmiarze 128 bajtow
+	// do ktorego dane zostana wczytane
+	char bufor[128] = { 0 };
+	// Wywolanie funkcji, jako argument deskryptor
+	// stworzony przez funkcje open()
+	// wskaznik do bufora oraz ile bajtow wczytac
+	read(deskryptor, bufor, 128);
+
+	return 0;
+}
+\end{lstlisting}
+}
+
 \defverbatim[colored]\lststat{
 \begin{lstlisting}[language=C,basicstyle=\tiny,keywordstyle=\color{black}]
 #include <stdio.h>
@@ -133,15 +202,7 @@ Aby dodać ją do pliku źrółowego należy dodać dwa pliki nagłówkowe \text
 
 \begin{frame}
 	\frametitle{creat() - sposób wywołania}
-\#include <fctln.h>\\
-\#include <sys/stat.h>\\
-int main()\\
-\{\\
-	const char *sciezka = "~/mojplik.txt";\\
-	mode\_t tryb = S\_IRWXU | S\_IRGRP | S\_IROTH;\\
-	int deskryptor = creat(sciezka, tryb);\\
-	return 0;\\
-\}
+	\lstcreat
 \end{frame}
 
 \begin{frame}
@@ -226,16 +287,7 @@ Następujące pliki nagłówkowe dodają ją do kodu źródłowego \textbf{fctln
 
 \begin{frame}
 	\frametitle{open() - sposób wywołania}
-\#include <fctln.h>\\
-\#include <sys/stat.h>\\
-\#include <sys/types.h>\\
-int main()\\
-\{\\
-	const char *sciezka = "~/wczesniejutworzonyplik.txt";\\
-	int flagi = O\_RDONLY | O\_NOFOLLOW;\\
-	int deskryptor = open(sciezka, flagi);\\
-	return 0;\\
-\}
+	\lstopen
 \end{frame}
 
 \begin{frame}
@@ -284,19 +336,7 @@ Plik nagłówkowy \textbf{unistd.h} dodaje tę funkcję do kodu.
 
 \begin{frame}
 	\frametitle{read() - sposób wywołania}
-\#include <fctln.h>\\
-\#include <sys/stat.h>\\
-\#include <sys/types.h>\\
-\#include <unistd.h> // tutaj jest funkcja read()\\
-int main()\\
-\{\\
-	const char *sciezka = "~/wczesniejutworzonyplik.txt";\\
-	int flagi = O\_RDONLY | O\_NOFOLLOW;\\
-	int deskryptor = open(sciezka, flagi);\\
-	char bufor[128] = { 0 };\\
-	read(deskryptor, bufor, 128);\\
-	return 0;\\
-\}
+	\lstread
 \end{frame}
 
 \begin{frame}
