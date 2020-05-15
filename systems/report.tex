@@ -130,6 +130,34 @@ Funkcja jest wywoływana z określonym położeniem pliku i położeniem naszego
 \item \textbf{newpath} - ścieżka w której chcemy utworzyć dowiązanie (w momencie w którym w ścieżce newpath plik już istnieje, dowiązanie nie zostanie utworzone a plik nie zostanie nadpisany)
 \end{itemize}
 
+\textbf{Przykład wywołania \textit{link()}}
+
+\begin{verbatim}
+#include <stdio.h>
+#include <unistd.h>
+
+//tworzymy zmienne wskaźnikową do typu char path1 i path2
+//w path1 podajemy miejsce oryginalnego pliku
+//w path2 miejsce w którym chcemy utworzyć dowiązanie
+
+char *path1 = "/home/user/plik1"; 
+char *path2 = "/home/user/links/plik1";
+
+//by sprawdzić czy link zadziałą możemy użyć zmiennej status typu int
+
+int   status; 
+
+//używamy link() podając za argumenty odpowiednie wskaźniki
+
+status = link(path1, path2);
+
+//wyświetlamy wartość zmiennej status, która jest jednocześnie wynikiem działania funkcji link()
+
+printf(%d,status);
+
+\end{verbatim}
+
+
 \textbf{Opis błędów}
 \begin{itemize}
 \item \textbf{EACCES} zapis do lokalizacji w której jest \textit{newpath} nie jest dozwolony, bądź \textit{oldpath} lub \textit{newpath} nie daje uprawnień wykonywania (przeszukiwania katalogu).
@@ -170,6 +198,39 @@ Prawa dostęp do dowiązania symbolicznego są nieistotne, ignoruje się jego w�
 
 Podczas wywołania podaj się tak jak w przypadku funkcji link() ścieżkę do pliku i ścieżkę w której ma zostać utworzone dowiązanie.
 Funkcja zwraca wartość zero gdy się powiedzie, w wypadku błędu zwraca wartość -1 i ustawia zmienną globalną \textit{errno} na wartość opisującą odpowiedni błąd.
+
+
+
+\textbf{Przykład wywołania \textit{symlink()}}
+
+
+Jest on zbliżony do wywołania funkcji link()
+\begin{verbatim}
+#include <stdio.h>
+#include <unistd.h>
+
+//tworzymy zmienne wskaźnikową do typu char path1 i path2
+//w path1 podajemy miejsce oryginalnego pliku
+//w path2 miejsce w którym chcemy utworzyć dowiązanie
+
+char *path1 = "/home/user/plik1"; 
+char *path2 = "/home/user/links/plik1";
+
+//by sprawdzić czy symlink zadziała możemy użyć zmiennej status typu int
+
+int   status; 
+
+//używamy symlink() podając za argumenty odpowiednie wskaźniki
+
+status = symlink(path1, path2);
+
+//wyświetlamy wartość zmiennej status, która jest jednocześnie wynikiem działania funkcji symlink()
+
+printf(%d,status);
+
+\end{verbatim}
+
+
 
 \textbf{Argumentami} tej funkcji są kolejno:
 \begin{itemize}
@@ -274,6 +335,44 @@ Funkcja zwraca wartość zero gdy się powiedzie, w wypadku błędu zwraca warto
 \item \textbf{pathname} - ścieżka do naszego pliku który chcemy przeanalizować
 \item \textbf{statbuf} - bufor wskazany przez użytkownika, do którego funkcja przekaże parametry pliku podanego w \textit{pathname}
 \end{itemize}
+
+
+\textbf{Przykład wywołania \textit{stat()}}
+
+\begin{verbatim}
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+
+//Tworzymy strukturę do której stat() ma przesłać dane odnośnie pliku
+
+struct stat ret; 
+
+//tworzymy zmienną wskaźnikową do typu char path1 
+//w path1 podajemy miejsce pliku do analizy
+
+char *path1 = "/home/user/plik1"; 
+
+//używamy funkcji stat z argumentami path1 i adresem struktury stat
+
+stat(path1, &ret); 
+
+//funkcji stat() możemy użyć do sprawdzenia czy nasz plik jest plikiem regularnym
+//używamy maski S_IFMT na polu st_mode by wyłuskać bit mówiący o typie pliku
+//porównujemy ten bit z wartością S_IFREG by sprawdzić czy to plik regularny
+//by dowiedzieć się czy jest to katalog użyjemy S_IFDIR
+
+if ((ret.st_mode & S_IFMT) == S_IFREG) {
+    printf("Testowany plik jest plikiem regularnym");
+}else if ((ret.st_mode & S_IFMT) == S_IFDIR){
+ 	printf("Testowany plik jest katalogiem");
+}
+
+
+
+\end{verbatim}
+
 
 \textbf{Opis błędów}
 \begin{itemize}
