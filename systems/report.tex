@@ -22,7 +22,7 @@ O\_WRONLY oznacza otworzenie pliku tylko w trybie zapisu.
 O\_TRUNC informuje funkcję, że jeżeli plik na podanej ścieżce dostępu już istnieje i jest zwykłym plikiem oraz użytkownik ma do niego dostęp, to jest on przycięty do zera.
 
 Funkcja do poprawnego wywołania przyjmuje dwa argumenty ścieżkę do otworzenia oraz permisje jakie mają zostać nadane nowo stworzonemu plikowi.
-Aby dodać ją do pliku źrółowego należy dodać dwa pliki nagłówkowe \textbf{fctln.h} i \textbf{sys/stat.h} dyrektywą \textit{\#include}.
+Aby dodać ją do pliku źrółowego należy dodać dwa pliki nagłówkowe \textbf{fctln.h} i \textbf{sys/stat.h} dyrektywą \textit{\#include}.
 
 Przykładowe wykorzystanie w języku C:
 \begin{verbatim}
@@ -84,7 +84,7 @@ Lecz jej głównym zadaniem jest otworzenie jakiegoś pliku i zwrócenie do nieg
 
 Do funkcji przesyłana jest ścieżka dostępu, ewentualne flagi zmieniające jej działanie oraz możliwe jest przesłanie jej permisji pliku.
 Po wywołaniu zwraca wartość taką jak w przypadku funkcji \textbf{creat()}.
-Następujące pliki nagłówkowe dodają ją do kodu źródłowego \textbf{fctln.h}, \textbf{sys/stat.h} oraz \textbf{sys/types.h}.
+Następujące pliki nagłówkowe dodają ją do kodu źródłowego \textbf{fctln.h}, \textbf{sys/stat.h} oraz \textbf{sys/types.h}.
 
 Przykładowe wykorzystanie w języku C:
 \begin{verbatim}
@@ -191,6 +191,7 @@ Funkcja jest wywoływana z określonym położeniem pliku i położeniem naszego
 #include <stdio.h>
 #include <unistd.h>
 
+int main(){
 //tworzymy zmienne wskaźnikową do typu char path1 i path2
 //w path1 podajemy miejsce oryginalnego pliku
 //w path2 miejsce w którym chcemy utworzyć dowiązanie
@@ -206,10 +207,11 @@ int   status;
 
 status = link(path1, path2);
 
-//wyświetlamy wartość zmiennej status, która jest jednocześnie wynikiem działania funkcji link()
+//wyświetlamy wartość zmiennej status, która jest jednocześnie wynikiem działania
+// funkcji link()
 
 printf(%d,status);
-
+return 0;}
 \end{verbatim}
 
 
@@ -264,6 +266,8 @@ Jest on zbliżony do wywołania funkcji link()
 #include <stdio.h>
 #include <unistd.h>
 
+
+int main(){
 //tworzymy zmienne wskaźnikową do typu char path1 i path2
 //w path1 podajemy miejsce oryginalnego pliku
 //w path2 miejsce w którym chcemy utworzyć dowiązanie
@@ -272,17 +276,18 @@ char *path1 = "/home/user/plik1";
 char *path2 = "/home/user/links/plik1";
 
 //by sprawdzić czy symlink zadziała możemy użyć zmiennej status typu int
-
 int   status; 
 
 //używamy symlink() podając za argumenty odpowiednie wskaźniki
 
 status = symlink(path1, path2);
 
-//wyświetlamy wartość zmiennej status, która jest jednocześnie wynikiem działania funkcji symlink()
+//wyświetlamy wartość zmiennej status, która jest jednocześnie wynikiem 
+//działania funkcji symlink()
 
 printf(%d,status);
-
+return 0;
+}
 \end{verbatim}
 
 
@@ -400,6 +405,7 @@ Funkcja zwraca wartość zero gdy się powiedzie, w wypadku błędu zwraca warto
 #include <sys/types.h>
 #include <sys/stat.h>
 
+int main(){
 //Tworzymy strukturę do której stat() ma przesłać dane odnośnie pliku
 
 struct stat ret; 
@@ -423,7 +429,8 @@ if ((ret.st_mode & S_IFMT) == S_IFREG) {
 }else if ((ret.st_mode & S_IFMT) == S_IFDIR){
  	printf("Testowany plik jest katalogiem");
 }
-
+return 0;
+}
 
 
 \end{verbatim}

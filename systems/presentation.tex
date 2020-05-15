@@ -2,6 +2,7 @@
 \title{Referat - Systemy operacyjne i administracja}
 \author{Mateusz Radomski \and Michał Posłuszny}
 \date{gr lab. 8, IT Rok I \\ Numery indeksów: 400569, 401341 }
+\usepackage{listings}
 
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -10,6 +11,103 @@
 \usetheme{Frankfurt}
 
 \begin{document}
+
+\defverbatim[colored]\lststat{
+\begin{lstlisting}[language=C,basicstyle=\tiny,keywordstyle=\color{black}]
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/types.h> //miejsce typow danych systemowych jak np blksize_t dla rozmiaru blokow
+#include <sys/stat.h> //miejsce funkcji i struktury stat
+int main(){
+//Tworzymy strukture do ktorej stat() ma przeslac dane odnosnie pliku
+
+struct stat ret; 
+
+//tworzymy zmienna wskaznikowa do typu char path1 
+//w path1 podajemy miejsce pliku do analizy
+
+char *path1 = "/home/user/plik1"; 
+
+//uzywamy funkcji stat z argumentami path1 i adresem struktury stat
+
+stat(path1, &ret); 
+
+//funkcji stat() mozemy uzyc do sprawdzenia czy nasz plik jest plikiem regularnym
+//uzywamy maski S_IFMT na polu st_mode by wyluskac bit mowiacy o typie pliku
+//porownujemy ten bit z wartoscia S_IFREG by sprawdzic czy to plik regularny
+//by dowiedziec sie czy jest to katalog uzyjemy S_IFDIR
+
+if ((ret.st_mode & S_IFMT) == S_IFREG) {
+    printf("Testowany plik jest plikiem regularnym");
+}else if ((ret.st_mode & S_IFMT) == S_IFDIR){
+ 	printf("Testowany plik jest katalogiem");
+}
+return 0;
+}
+
+\end{lstlisting}
+}
+
+\defverbatim[colored]\lstlink{
+\begin{lstlisting}[language=C,basicstyle=\tiny,keywordstyle=\color{black}]
+#include <stdio.h>
+#include <unistd.h>
+
+int main(){
+//tworzymy zmienne wskaznikowa do typu char path1 i path2
+//w path1 podajemy miejsce oryginalnego pliku
+//w path2 miejsce w ktorym chcemy utworzyc dowiazanie
+
+char *path1 = "/home/user/plik1"; 
+char *path2 = "/home/user/links/plik1";
+
+//by sprawdzic czy link zadziala mozemy uzyc zmiennej status typu int
+
+int   status; 
+
+//uzywamy link() podajac za argumenty odpowiednie wskazniki
+
+status = link(path1, path2);
+
+//wyswietlamy wartosc zmiennej status, ktora jest jednoczosnie wynikiem dzialania funkcji link()
+
+printf(%d,status);
+return 0;}
+\end{lstlisting}
+}
+
+\defverbatim[colored]\lstsymlink{
+\begin{lstlisting}[language=C,basicstyle=\tiny,keywordstyle=\color{black}]
+#include <stdio.h>
+#include <unistd.h> //miejsce funkcji symlink
+
+int main()
+{
+//tworzymy zmienne wskaznikowa do typu char path1 i path2
+//w path1 podajemy miejsce oryginalnego pliku
+//w path2 miejsce w ktorym chcemy utworzyc dowiazanie symboliczne
+
+char *path1 = "/home/user/plik1"; 
+char *path2 = "/home/user/links/plik1";
+
+//by sprawdzic czy symlink zadziala mozemy uzyc zmiennej status typu int
+
+int  status; 
+
+//uzywamy symlink() podajac za argumenty odpowiednie wskazniki
+
+status = symlink(path1, path2);
+
+//wyswietlamy wartosc zmiennej status, ktora jest jednoczesnie wynikiem dzialania funkcji symlink()
+
+printf(%d,status);
+	return 0;
+}
+\end{lstlisting}
+}
+
+
+
 \maketitle
 \begin{frame}
 	\frametitle{creat() - efekt działania}
@@ -30,7 +128,7 @@
 \begin{frame}
 	\frametitle{creat() - sposób wywołania}
 Funkcja do poprawnego wywołania przyjmuje dwa argumenty ścieżkę do otworzenia oraz permisje jakie mają zostać nadane nowo stworzonemu plikowi.
-Aby dodać ją do pliku źrółowego należy dodać dwa pliki nagłówkowe \textbf{fctln.h} i \textbf{sys/stat.h} dyrektywą \textit{\#include}.
+Aby dodać ją do pliku źrółowego należy dodać dwa pliki nagłówkowe \textbf{fctln.h} i \textbf{sys/stat.h} dyrektywą \textit{\#include}.
 \end{frame}
 
 \begin{frame}
@@ -123,7 +221,7 @@ Lecz jej głównym zadaniem jest otworzenie jakiegoś pliku i zwrócenie do nieg
 	\frametitle{open() - sposób wywołania}
 Do funkcji przesyłana jest ścieżka dostępu, ewentualne flagi zmieniające jej działanie oraz możliwe jest przesłanie jej permisji pliku.
 Po wywołaniu zwraca wartość taką jak w przypadku funkcji \textbf{creat()}.
-Następujące pliki nagłówkowe dodają ją do kodu źródłowego \textbf{fctln.h}, \textbf{sys/stat.h} oraz \textbf{sys/types.h}.
+Następujące pliki nagłówkowe dodają ją do kodu źródłowego \textbf{fctln.h}, \textbf{sys/stat.h} oraz \textbf{sys/types.h}.
 \end{frame}
 
 \begin{frame}
@@ -250,6 +348,11 @@ Funkcja jest wywoływana z określonym położeniem pliku i położeniem naszego
 \end{frame}
 
 \begin{frame}
+\frametitle{link()- przykład wywołania}
+\lstlink
+\end{frame}
+
+\begin{frame}
 	\frametitle{link() - opis błędów}
 \begin{itemize}
 \item \textbf{EACCES} zapis do lokalizacji w której jest \textit{newpath} nie jest dozwolony, bądź \textit{oldpath} lub \textit{newpath} nie daje uprawnień wykonywania (przeszukiwania katalogu).
@@ -306,6 +409,11 @@ Podczas wywołania podaj się tak jak w przypadku funkcji link() ścieżkę do p
 \item \textbf{target} - ścieżka do naszego pliku
 \item \textbf{linkpath} - ścieżka w której chcemy utworzyć dowiązanie (w momencie w którym w ścieżce newpath plik już istnieje, dowiązanie nie zostanie utworzone a plik nie zostanie nadpisany)
 \end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{symlink()- przykład wywołania}
+\lstsymlink
 \end{frame}
 
 \begin{frame}
@@ -430,6 +538,15 @@ Dla pola st\_mode istnieją zdefiniowane maski do typu pliku, są to kolejno:
 \item \textbf{statbuf} - bufor wskazany przez użytkownika, do którego funkcja przekaże parametry pliku podanego w \textit{pathname}
 \end{itemize}
 \end{frame}
+
+
+\begin{frame}
+\frametitle{stat() - przykład wywołania}
+\textbf{Przykład wywołania \textit{stat()}}
+\lststat
+\end{frame}
+
+
 
 \begin{frame}
 	\frametitle{stat() - opis błędów}
